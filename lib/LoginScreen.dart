@@ -23,67 +23,62 @@ class _State extends State<Auth> {
   void initState() {
     super.initState();
   }
-  void getData(){
-    var username=_usernameTextController.text;
-    var password=_passwordTextController.text;
-    UserService().getUser(username, password).then((value){
-      setState(()=>_user=value);
-    }
-    );
 
+  void getData() {
+    var username = _usernameTextController.text;
+    var password = _passwordTextController.text;
+    UserService().getUser(username, password).then((value) {
+      setState(() => _user = value);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+        home: Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
-        title: const Text('Задание 2'),
+        title: const Text('Вход'),
       ),
-      body:  Column(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
               padding: const EdgeInsetsDirectional.all(5),
               child: TextField(
                 controller: _usernameTextController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder()),
+                decoration: const InputDecoration(border: OutlineInputBorder()),
               )),
           Container(
               padding: const EdgeInsetsDirectional.all(5),
               child: TextField(
                 controller: _passwordTextController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder()),
+                decoration: const InputDecoration(border: OutlineInputBorder()),
               )),
           Container(
-            child: IconButton(
-              onPressed: () { getData();  },
-              icon: const Icon(Icons.search),
+            child: TextButton(
+              child: Text("ОК"),
+              onPressed: () {
+                getData();
+              },
 
             ),
           ),
           Container(
-              child:
-              (_user==null)
-                  ?  const Center(child: CircularProgressIndicator())
-                  :connectionStructureListView()
-          ),
+              child: (_user == null)
+                  ? const Center(child: CircularProgressIndicator())
+                  : connectionStructure()),
         ],
       ),
-    );
-
+    ));
   }
-  Widget connectionStructureListView() {
+
+  Widget connectionStructure() {
     return Container(
         height: 80,
-        child: ListView(
-            children: [
-              ListTile(
-                  leading: const Icon(Icons.account_circle),
-                  subtitle: Text(_user!.lastName.toString()+" "+_user!.firstName.toString()+" "+_user!.patronymic.toString())),]
-        )
-    );
+        child: ListView(children: [
+          ListTile(
+              leading: const Icon(Icons.account_circle),
+              subtitle: Text("${_user!.lastName} ${_user!.firstName} ${_user!.patronymic}  ${_user!.position} ")),
+        ]));
   }
-
 }
